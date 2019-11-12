@@ -27,50 +27,46 @@ var chartGroup = svg.append("g")
     .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
 
-// Importing the Data
+// Import the Data
 d3.csv("assets/data/data.csv").then(function(data,error) {
     
     if (error) throw error;
     
 
-    // Formatting the Data
+    // Format the Data
     data.forEach(function(d,i){
         d.poverty = +d.poverty
         d.obesity = +d.obesity
-    }); // end Formatting Data
+    });
 
-    // Map the data to their own array
+    // Map the data to array
     var poverty = data.map(d => d.poverty)
     var obesity = data.map(d => d.obesity)
-
-    // Creating the X & Y Scales
     
-    // Creating X1 Axis, Scale & Group
+    // Creating X Axis
     var xPovertyScale = d3.scaleLinear()
         .domain([d3.min(poverty)-1,d3.max(poverty)+1])
         .range([0,width])
 
     var bottomAxis = d3.axisBottom(xPovertyScale)
     
-    // Add bottomAxis
     chartGroup.append("g")
         .attr("name","bottom-axis")
         .attr("transform", `translate(0, ${height})`)
         .call(bottomAxis);
 
-    // Creating Y1 Axis, Scale & Group
+    // Creating Y Axis
     var yObesityScale = d3.scaleLinear()
         .domain([d3.min(obesity)-1,d3.max(obesity)+1])
         .range([height,0])
 
     var leftAxis = d3.axisLeft(yObesityScale)
     
-    // Add bottomAxis
     chartGroup.append("g")
         .attr("name","left-axis")
         .call(leftAxis);
 
-    // Create the Circles for Scatter
+    // Create points
 
     var tool_tip = d3.tip()
         .attr("class", "d3-tip")
@@ -108,7 +104,7 @@ d3.csv("assets/data/data.csv").then(function(data,error) {
         .on('mouseover',tool_tip.show)
         .on('mouseout',tool_tip.hide)
 
-           // Create axes labels
+    // Create labels for axes
     chartGroup.append("text")
         .attr("transform", "rotate(-90)")
         .attr("y", 0 - margin.left-5)
